@@ -21,19 +21,24 @@ function addElementToBody(element){
 function revealCorrectGuess(word){
   each(word, function(letter){
     let options = letterElementHash[letter];
-    let choice = options[Math.round(Math.random()*(options.length - 1))];
-    choice.style.textShadow = "10px 10px 0 #ffd217, 20px 20px 0 #5ac7ff, 30px 30px 0 #ffd217, 40px 40px 0 #5ac7ff"
+    let choice = chooseRandomOptionAndMarkDone(options);
+    choice.style.textShadow = "10px 10px 0 #ffd217, 20px 20px 0 #5ac7ff, 30px 30px 0 #ffd217, 40px 40px 0 #5ac7ff";
+    choice.style.color = "white";
   });
 }
 
 function chooseRandomOptionAndMarkDone(options){
-  let options = filter(letterElementHash[letter], handleOptions);
-  let choice = options[Math.round(Math.random()*(options.length - 1))];
+  console.log(options)
+  options = filter(options, handleOption);
+  console.log(options)
+  let choice = options[Math.floor(Math.random()*(options.length))];
+  return choice
 }
 
-function handleOptions(item){
-  if (option.dataSet.puzzle_word){
-    option.dataSet.puzzle_word = null;
+function handleOption(option){
+  console.log(option);
+  if (option.dataset.letter){
+    option.dataset.letter = "";
     return true;
   } else {
     return false;
@@ -42,7 +47,7 @@ function handleOptions(item){
 
 function createLetterElement(letter){
   let letterElement = document.createElement("div");
-  letterElement.dataset = letter;
+  letterElement.dataset.letter = letter;
   letterElement.className = "letter-element";
   letterElement.innerHTML = letter;
   return letterElement;
@@ -69,9 +74,11 @@ function map(array, callback){
 }
 
 function filter(array, filterFunction){
-  return map(array, function(item){
-    if (filterFunction(item)){ return item; }
+  let filtered = [];
+  each(array, function(item){
+    if (filterFunction(item)){ filtered.push(item); }
   });
+  return filtered;
 }
 
 function run(){
