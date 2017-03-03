@@ -1,0 +1,11 @@
+#puzzle_words {
+  display: flex;
+}
+.letter-element {
+    text-align: center;
+    margin: 200px auto;
+    font-family: "League-Gothic", Courier;
+    font-size: 200px;
+    text-transform: uppercase;
+    color: #fff;
+}
