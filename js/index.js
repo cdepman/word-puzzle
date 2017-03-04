@@ -1,15 +1,27 @@
 const promptsAndAnswers = {
   "Too high in SF" : "RENT",
+  "Currency of Japan" : "YEN",
+  "Wonderment" : "AWE",
+  "A production of buffoonery": "FARCE"
 }
-const letterElementHash = {};
+const characterElementHash = {};
 const puzzleWordElement = document.getElementById("puzzle_words");
-const cleansed = puzzleWordElement.dataset["puzzle_word"].replace(/\W/g, '');
-each(cleansed, function(letter){
-  if (!letterElementHash[letter]){
-    letterElementHash[letter] = [];
+const words = puzzleWordElement.dataset["puzzle_word"];
+each(words, function(char){
+  let element;
+  if (isSpaceCharacter(char)){
+    element = createSpaceElement();
+  } else {
+    if (charInAnswer(char)){
+      if (!characterElementHash[char]){
+        characterElementHash[char] = [];
+      }
+      element = createGuessLetterElement(char);
+      characterElementHash[char].push(element);
+    } else {
+      element = createRevealedLetterElement(char);
+    }
   }
-  let element = createLetterElement(letter)
-  letterElementHash[letter].push(element);
   addElementToBody(element);
 });
 
@@ -18,34 +30,55 @@ function addElementToBody(element){
   return element;
 }
 
+function charInAnswer(char){
+  return true;
+}
+
+function createSpaceElement(){
+  let spaceElement = document.createElement("div");
+  spaceElement.className = "space-element";
+  return spaceElement;
+}
+
+function createRevealedLetterElement(char){
+  let letterElement = document.createElement("div");
+  letterElement.dataset.letter = char;
+  letterElement.className = "revealed-letter-element";
+  letterElement.innerHTML = char;
+  return letterElement;
+}
+
+function isSpaceCharacter(char){
+  return char.charCodeAt(0) === 32;
+}
+
 function revealCorrectGuess(word){
   each(word, function(letter){
-    let options = letterElementHash[letter];
+    let options = characterElementHash[letter];
     let choice = chooseRandomOptionAndMarkDone(options);
+    choice.style.borderBottom = "none";
     choice.style.textShadow = "10px 10px 0 #ffd217, 20px 20px 0 #5ac7ff, 30px 30px 0 #ffd217, 40px 40px 0 #5ac7ff";
     choice.style.color = "white";
   });
 }
 
 function chooseRandomOptionAndMarkDone(options){
-  console.log(options)
   options = filter(options, handleOption);
-  console.log(options)
-  let choice = options[Math.floor(Math.random()*(options.length))];
+  let randomIndex = Math.floor(Math.random()*(options.length));
+  let choice = options[randomIndex];
+  choice.dataset.letter = "";
   return choice
 }
 
 function handleOption(option){
-  console.log(option);
-  if (option.dataset.letter){
-    option.dataset.letter = "";
+  if (option.dataset.letter.length){
     return true;
   } else {
     return false;
   } 
 }
 
-function createLetterElement(letter){
+function createGuessLetterElement(letter){
   let letterElement = document.createElement("div");
   letterElement.dataset.letter = letter;
   letterElement.className = "letter-element";
@@ -85,11 +118,6 @@ function run(){
   let guess = prompt("Too high in SF");
   guess = guess.toUpperCase();
   if (guess === "RENT" || guess === "FARCE" || guess === "AWE" || guess === "YEN"){
-    console.log(guess);
     revealCorrectGuess(guess);
   }
-  setTimeout(function(){
-    run();
-  }, 300);
 }
-run();
