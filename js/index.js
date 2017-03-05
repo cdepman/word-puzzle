@@ -395,7 +395,7 @@ function gameOver(){
 
 // COUNTDOWN TIMER adapted from https://github.com/sanographix/css3-countdown
 
-const COUNTDOWN_LENGTH_SECONDS = 75;
+const COUNTDOWN_LENGTH_SECONDS = 80;
 
 function CountdownTimer(elm,tl,executeAtEnd){
  this.initialize.apply(this,arguments);
