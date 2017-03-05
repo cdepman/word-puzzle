@@ -1,7 +1,24 @@
 html {
   margin: 0 auto;
-  background-color: blueviolet;
+  background-color: palevioletred;
+  width: 100%;
+  height: 100%;
 }
+
+body {
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+}
+
+#puzzle_container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #puzzle_words {
   display: flex;
   flex-wrap: wrap;
@@ -12,11 +29,15 @@ html {
   font-family: "League-Gothic", Courier;
   font-size: 200px;
   text-transform: uppercase;
-  color: blueviolet;
+  color: palevioletred;
   user-select: none;
   border-bottom: 1px solid white;
   transition: border-bottom 1s ease-out;
   transition: color 1s ease;
+}
+
+#canvas_click_wrapper {
+  position: relative;
 }
 
 .space-element {
@@ -38,7 +59,57 @@ html {
   font-family: "League-Gothic", Courier;
   font-size: 200px;
   text-transform: uppercase;
-  color: blueviolet;
+  color: palevioletred;
   user-select: none;
   border-bottom: 10px 10px 0 #ffd217, 20px 20px 0 #5ac7ff, 30px 30px 0 #ffd217, 40px 40px 0 #5ac7ff; 
+}
+
+#canvas {
+  border: solid 4px;
+  border-bottom-color: #ffe;
+  border-left-color: #eed;
+  border-right-color: #eed;
+  border-top-color: #ccb;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+#frame {
+  background-color: #ddc;
+  border: solid 5vmin #eee;
+  border-bottom-color: #fff;
+  border-left-color: #eee;
+  border-radius: 2px;
+  border-right-color: #eee;
+  border-top-color: #ddd;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25) inset, 0 5px 10px 5px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 2vh 2vw;
+  padding: 8vmin;
+  position: absolute;
+  text-align: center;
+}
+
+#frame:before {
+  border-radius: 2px;
+  bottom: -2vmin;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25) inset;
+  content: "";
+  left: -2vmin;
+  position: absolute;
+  right: -2vmin;
+  top: -2vmin;
+  pointer-events: none;
+}
+#frame:after {
+  border-radius: 2px;
+  bottom: -2.5vmin;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
+  content: "";
+  left: -2.5vmin;
+  position: absolute;
+  right: -2.5vmin;
+  top: -2.5vmin;
+  pointer-events: none;
 }
