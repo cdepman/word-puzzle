@@ -145,17 +145,12 @@ function guessIsCorrect(guess){
   return false;
 }
 
-function run(){
-  let guess = prompt("Too high in SF");
-
-}
-
 function submitGuess(){
   let input = document.getElementById("guess_input");
   let guess = input.value;
   if (guess && guessIsCorrect(guess)){
     revealCorrectGuess(guess);
-    delete(input.value);
+    input.value = "";
   }
 }
 
@@ -395,13 +390,13 @@ function gameOver(){
 
 // COUNTDOWN TIMER adapted from https://github.com/sanographix/css3-countdown
 
-const COUNTDOWN_LENGTH_SECONDS = 80;
+const COUNTDOWN_LENGTH_SECONDS = 90;
 
 function CountdownTimer(elm,tl,executeAtEnd){
  this.initialize.apply(this,arguments);
 }
 CountdownTimer.prototype={
- initialize:function(elm,tl,executeAtEnd) {
+ initialize:function(elm, tl, executeAtEnd) {
   this.elem = document.getElementById(elm);
   this.tl = tl;
   this.executeAtEnd = executeAtEnd;
@@ -427,13 +422,13 @@ CountdownTimer.prototype={
   }
  },addZero:function(num){ return ('0'+num).slice(-2); }
 }
-function CDT(startDelayMS = 0){
+function CDT(startDelayMS = 0){ 
 
  // Set countdown limit
  var tl = new Date((new Date()).getTime() + 1000 * COUNTDOWN_LENGTH_SECONDS);
 
  // You can add time's up message here
- var timer = new CountdownTimer('CDT',tl,resetPuzzle);
+ var timer = new CountdownTimer('CDT', tl ,resetPuzzle);
  setTimeout(function(){
   timer.countDown();
  }, startDelayMS)
