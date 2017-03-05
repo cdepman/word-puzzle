@@ -1,8 +1,8 @@
 const promptsAndAnswers = {
-  "Too high in SF" : "RENT",
-  "Asian capital?" : "YEN",
-  "You may be struck with it" : "AWE",
-  "S.N.L. Specialty": "FARCE"
+  "Too high in SF" : "rent",
+  "Asian capital?" : "yen",
+  "You may be struck with it" : "awe",
+  "S.N.L. Specialty": "farce"
 }
 
 const GUESS_ELEMENT_HASH = {};
@@ -136,7 +136,7 @@ function filter(array, filterFunction){
 }
 
 function guessIsCorrect(guess){
-  guess = guess.toUpperCase();
+  guess = guess.toLowerCase();
   for (key in promptsAndAnswers){
     if (guess === promptsAndAnswers[key]){
       return true;
@@ -147,8 +147,15 @@ function guessIsCorrect(guess){
 
 function run(){
   let guess = prompt("Too high in SF");
+
+}
+
+function submitGuess(){
+  let input = document.getElementById("guess_input");
+  let guess = input.value;
   if (guess && guessIsCorrect(guess)){
     revealCorrectGuess(guess);
+    delete(input.value);
   }
 }
 

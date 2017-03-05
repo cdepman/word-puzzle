@@ -24,6 +24,8 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: absolute;
+  width: 100%;
 }
 
 #puzzle_words {
@@ -45,6 +47,13 @@ body {
 
 #canvas_click_wrapper {
   position: relative;
+}
+
+#guess_input {
+  margin-top: 60px;
+  width: 140px;
+  border-radius: 4px;
+  height: 19px;
 }
 
 .space-element {
@@ -128,7 +137,6 @@ body {
   justify-content: flex-start;
   position: absolute;
   width: 100%;
-  padding: 20px;
 }
 
 #CDT {
