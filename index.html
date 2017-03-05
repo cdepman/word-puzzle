@@ -7,14 +7,24 @@
         <link href="css/styles.css" rel="stylesheet">
     </head>
     <body onload="init();">
-    <div id="puzzle_container">
-      <div id="puzzle_words" data-puzzle_word="FREEWAY ENTRANCE"></div>
-      <div id="frame">
-        <div id="canvas_click_wrapper">
-          <canvas id="canvas"></canvas>
+      <div id="clock_container">
+        <div id="CDT"></div>
+      </div>
+      <div id="word_puzzle_input_container">
+        <input type="text" placeholder="Username" required="" id="username" />
+        <div class="button">
+          Submit Guess
+        </div>
+			</div>
+      </div>
+      <div id="puzzle_container">
+        <div id="puzzle_words" data-puzzle_word="FREEWAY ENTRANCE"></div>
+        <div id="frame">
+          <div id="canvas_click_wrapper">
+            <canvas id="canvas"></canvas>
+          </div>
         </div>
       </div>
-    </div>
     </body>
     <script src="js/index.js"></script>
 </html>

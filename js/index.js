@@ -4,26 +4,42 @@ const promptsAndAnswers = {
   "You may be struck with it" : "AWE",
   "S.N.L. Specialty": "FARCE"
 }
-const characterElementHash = {};
+
+const GUESS_ELEMENT_HASH = {};
 const puzzleWordElement = document.getElementById("puzzle_words");
-const words = puzzleWordElement.dataset["puzzle_word"].toLowerCase();
-each(words, function(char){
-  let element;
-  if (isSpaceCharacter(char)){
-    element = createSpaceElement();
-  } else {
-    if (charInAnswer(char)){
-      if (!characterElementHash[char]){
-        characterElementHash[char] = [];
-      }
-      element = createGuessLetterElement(char);
-      characterElementHash[char].push(element);
+
+// class WordPuzzle {
+//   constructor(text){
+// this.GUESS_ELEMENT_HASH = 
+//   }
+// }
+
+function initWordPuzzle(text){
+  each(text, function(char){
+    if (isSpaceCharacter(char)){
+      addElementToBody(createSpaceElement());
     } else {
-      element = createRevealedLetterElement(char);
+      addElementToBody(createCharacterElement(char));
     }
+  });
+}
+
+function createCharacterElement(char){
+  if (charInAnswer(char)){
+    element = createGuessLetterElement(char);
+    popuplateGuessElementHash(char, element);
+    return element;
+  } else {
+    return createRevealedLetterElement(char);
   }
-  addElementToBody(element);
-});
+}
+
+function popuplateGuessElementHash(char, element){
+  if (!GUESS_ELEMENT_HASH[char]){
+    GUESS_ELEMENT_HASH[char] = [];
+  }
+  GUESS_ELEMENT_HASH[char].push(element);
+}
 
 function addElementToBody(element){
   puzzleWordElement.appendChild(element);
@@ -53,10 +69,12 @@ function isSpaceCharacter(char){
 }
 
 function revealCorrectGuess(word){
+  console.log(word)
   each(word, function(letter){
-    console.log(letter)
-    let optionsArray = characterElementHash[letter];
+    let optionsArray = GUESS_ELEMENT_HASH[letter];
+    console.log(optionsArray)
     let choice = chooseRandomOption(optionsArray);
+    console.log(choice)
     delete(choice.dataset.letter);
     choice.style.borderBottom = "none";
     choice.style.textShadow = "10px 10px 0 #ffd217, 20px 20px 0 #5ac7ff, 30px 30px 0 #ffd217, 40px 40px 0 #5ac7ff";
@@ -65,19 +83,13 @@ function revealCorrectGuess(word){
 }
 
 function chooseRandomOption(optionsArray){
-  console.log(optionsArray);
-  filteredOptions = filter(optionsArray, rejectAlreadyChosen);
-  console.log(filteredOptions);
+  filteredOptions = filter(optionsArray, onlyTakeUnchosen);
   let randomIndex = Math.floor(Math.random()*(filteredOptions.length));
-  console.log("randomIndex");
-  console.log(randomIndex);
   let choice = filteredOptions[randomIndex];
   return choice
 }
 
-function rejectAlreadyChosen(option){
-  console.log("option.dataset.letter");
-  console.log(option.dataset.letter);
+function onlyTakeUnchosen(option){
   if (option.dataset.letter){
     return true;
   } else {
@@ -135,17 +147,16 @@ function guessIsCorrect(guess){
 
 function run(){
   let guess = prompt("Too high in SF");
-  if (guessIsCorrect(guess)){
+  if (guess && guessIsCorrect(guess)){
     revealCorrectGuess(guess);
   }
 }
 
-
 // IMAGE PUZZLE adapted from: https://code.tutsplus.com/tutorials/create-an-html5-canvas-tile-swapping-puzzle--active-10747
-
 
 const PUZZLE_DIFFICULTY = 5;
 const PUZZLE_HOVER_TINT = '#009900';
+const PUZZLE_INITIAL_VIEW_LENGTH_MS = 5000;
  
 var _canvas;
 var _stage;
@@ -164,7 +175,7 @@ var _mouse;
 function init(){
     _img = new Image();
     _img.addEventListener('load', onImage, false);
-    _img.src = "flowercarrier.jpg";
+    _img.src = "./images/flowercarrier.jpg";
 }
 
 function onImage(e){
@@ -191,8 +202,11 @@ function initPuzzle(){
     _currentPiece = null;
     _currentDropPiece = null;
     _stage.drawImage(_img, 0, 0, _puzzleWidth, _puzzleHeight, 0, 0, _puzzleWidth, _puzzleHeight);
-    createTitle("Click to Start Puzzle");
     buildPieces();
+    CDT(PUZZLE_INITIAL_VIEW_LENGTH_MS);
+    setTimeout(function(){
+      shufflePuzzle();
+    }, PUZZLE_INITIAL_VIEW_LENGTH_MS)
 }
 
 function createTitle(msg){
@@ -223,7 +237,6 @@ function buildPieces(){
             yPos += _pieceHeight;
         }
     }
-    _clickWrapper.onmousedown = shufflePuzzle;
 }
 
 function shufflePuzzle(){
@@ -345,26 +358,81 @@ function pieceDropped(e){
 }
 
 function resetPuzzleAndCheckWin(){
-    _stage.clearRect(0,0,_puzzleWidth,_puzzleHeight);
-    var gameWin = true;
-    var i;
-    var piece;
-    for(i = 0;i < _pieces.length;i++){
-        piece = _pieces[i];
-        _stage.drawImage(_img, piece.sx, piece.sy, _pieceWidth, _pieceHeight, piece.xPos, piece.yPos, _pieceWidth, _pieceHeight);
-        _stage.strokeRect(piece.xPos, piece.yPos, _pieceWidth,_pieceHeight);
-        if(piece.xPos != piece.sx || piece.yPos != piece.sy){
-            gameWin = false;
-        }
+  _stage.clearRect(0,0,_puzzleWidth,_puzzleHeight);
+  var gameWin = true;
+  var i;
+  var piece;
+  for ( i = 0; i < _pieces.length; i++ ){
+    piece = _pieces[i];
+    _stage.drawImage(_img, piece.sx, piece.sy, _pieceWidth, _pieceHeight, piece.xPos, piece.yPos, _pieceWidth, _pieceHeight);
+    _stage.strokeRect(piece.xPos, piece.yPos, _pieceWidth,_pieceHeight);
+    if (piece.xPos != piece.sx || piece.yPos != piece.sy){
+      gameWin = false;
     }
-    if(gameWin){
-        setTimeout(gameOver,500);
-    }
+  }
+  if (gameWin){
+    setTimeout(gameOver,500);
+  }
 }
 
 function gameOver(){
-    _clickWrapper.onmousedown = null;
-    _clickWrapper.onmousemove = null;
-    _clickWrapper.onmouseup = null;
-    _frame.style.display = "none";
+  _clickWrapper.onmousedown = null;
+  _clickWrapper.onmousemove = null;
+  _clickWrapper.onmouseup = null;
+  _frame.style.display = "none";
+  document.getElementsByTagName('html')[0].style.backgroundColor = "palevioletred";
+  document.getElementById("clock_container").style.display = "none";
+  document.getElementById("word_puzzle_input_container").style.display = "flex";
+  initWordPuzzle("freeway entrance");
+}
+
+// COUNTDOWN TIMER adapted from https://github.com/sanographix/css3-countdown
+
+const COUNTDOWN_LENGTH_SECONDS = 75;
+
+function CountdownTimer(elm,tl,executeAtEnd){
+ this.initialize.apply(this,arguments);
+}
+CountdownTimer.prototype={
+ initialize:function(elm,tl,executeAtEnd) {
+  this.elem = document.getElementById(elm);
+  this.tl = tl;
+  this.executeAtEnd = executeAtEnd;
+  this.elem.innerHTML = '<span class="number-wrapper"><div class="line"></div><span class="number min">00</span></span><span class="number-wrapper"><div class="line"></div><span class="number sec">00</span></span>';
+ },countDown:function(){
+  var timer='';
+  var today=new Date();
+  // var day=Math.floor((this.tl-today)/(24*60*60*1000));
+  // var hour=Math.floor(((this.tl-today)%(24*60*60*1000))/(60*60*1000));
+  var min=Math.floor(((this.tl-today)%(24*60*60*1000))/(60*1000))%60;
+  var sec=Math.floor(((this.tl-today)%(24*60*60*1000))/1000)%60%60;
+  var me=this;
+
+  if( ( this.tl - today ) > 0 ){
+  //  timer += '<span class="number-wrapper"><div class="line"></div><div class="caption">DAYS</div><span class="number day">'+day+'</span></span>';
+  //  timer += '<span class="number-wrapper"><div class="line"></div><div class="caption">HOURS</div><span class="number hour">'+hour+'</span></span>';
+   timer += '<span class="number-wrapper"><div class="line"></div><span class="number min">'+this.addZero(min)+'</span></span><span class="number-wrapper"><div class="line"></div><span class="number sec">'+this.addZero(sec)+'</span></span>';
+   this.elem.innerHTML = timer;
+   tid = setTimeout( function(){me.countDown();},10 );
+  }else{
+  //  this.elem.innerHTML = this.mes;
+   return this.executeAtEnd();
+  }
+ },addZero:function(num){ return ('0'+num).slice(-2); }
+}
+function CDT(startDelayMS = 0){
+
+ // Set countdown limit
+ var tl = new Date((new Date()).getTime() + 1000 * COUNTDOWN_LENGTH_SECONDS);
+
+ // You can add time's up message here
+ var timer = new CountdownTimer('CDT',tl,resetPuzzle);
+ setTimeout(function(){
+  timer.countDown();
+ }, startDelayMS)
+}
+
+function resetPuzzle(){
+  shufflePuzzle();
+  CDT(1000);
 }
