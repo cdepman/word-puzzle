@@ -1,18 +1,9 @@
-const promptsAndAnswers = {
-  "Too high in SF" : "rent",
-  "Asian capital?" : "yen",
-  "You may be struck with it" : "awe",
-  "S.N.L. Specialty": "farce"
-}
+document.body.onload = init;
 
+const ANSWERS = ["biplanes", "scrapped"];
+const HIDDEN_RIDDLE = "bad apple princess"
 const GUESS_ELEMENT_HASH = {};
 const puzzleWordElement = document.getElementById("puzzle_words");
-
-// class WordPuzzle {
-//   constructor(text){
-// this.GUESS_ELEMENT_HASH = 
-//   }
-// }
 
 function initWordPuzzle(text){
   each(text, function(char){
@@ -137,8 +128,8 @@ function filter(array, filterFunction){
 
 function guessIsCorrect(guess){
   guess = guess.toLowerCase();
-  for (key in promptsAndAnswers){
-    if (guess === promptsAndAnswers[key]){
+  for (var i = 0; i < ANSWERS.length; i++){
+    if (guess === ANSWERS[i]){
       return true;
     }
   }
@@ -149,9 +140,17 @@ function submitGuess(){
   let input = document.getElementById("guess_input");
   let guess = input.value;
   if (guess && guessIsCorrect(guess)){
+    document.getElementById("notice_box").innerHTML = "";
     revealCorrectGuess(guess);
     input.value = "";
+  } else {
+    alertWrongAnswer(guess);
   }
+}
+
+function alertWrongAnswer(wrongAnswer){
+  let elem = document.getElementById("notice_box");
+  elem.innerHTML = `Sorry, that is not the right answer. Guess again!`;
 }
 
 // IMAGE PUZZLE adapted from: https://code.tutsplus.com/tutorials/create-an-html5-canvas-tile-swapping-puzzle--active-10747
@@ -205,7 +204,7 @@ function initPuzzle(){
     _currentDropPiece = null;
     _stage.drawImage(_img, 0, 0, _puzzleWidth, _puzzleHeight, 0, 0, _puzzleWidth, _puzzleHeight);
     buildPieces();
-    CDT(PUZZLE_INITIAL_VIEW_LENGTH_MS);
+    countDown(PUZZLE_INITIAL_VIEW_LENGTH_MS);
     setTimeout(function(){
       shufflePuzzle();
     }, PUZZLE_INITIAL_VIEW_LENGTH_MS)
@@ -385,17 +384,17 @@ function gameOver(){
   document.getElementsByTagName('html')[0].style.backgroundColor = "palevioletred";
   document.getElementById("clock_container").style.display = "none";
   document.getElementById("word_puzzle_input_container").style.display = "flex";
-  initWordPuzzle("freeway entrance");
+  initWordPuzzle(HIDDEN_RIDDLE);
 }
 
 // COUNTDOWN TIMER adapted from https://github.com/sanographix/css3-countdown
 
-const COUNTDOWN_LENGTH_SECONDS = 90;
+const COUNTDOWN_LENGTH_SECONDS = 100;
 
-function CountdownTimer(elm,tl,executeAtEnd){
+function countdownTimer(elm,tl,executeAtEnd){
  this.initialize.apply(this,arguments);
 }
-CountdownTimer.prototype={
+countdownTimer.prototype={
  initialize:function(elm, tl, executeAtEnd) {
   this.elem = document.getElementById(elm);
   this.tl = tl;
@@ -422,13 +421,13 @@ CountdownTimer.prototype={
   }
  },addZero:function(num){ return ('0'+num).slice(-2); }
 }
-function CDT(startDelayMS = 0){ 
+function countDown(startDelayMS = 0){ 
 
  // Set countdown limit
  var tl = new Date((new Date()).getTime() + 1000 * COUNTDOWN_LENGTH_SECONDS);
 
  // You can add time's up message here
- var timer = new CountdownTimer('CDT', tl ,resetPuzzle);
+ var timer = new countdownTimer('CDT', tl ,resetPuzzle);
  setTimeout(function(){
   timer.countDown();
  }, startDelayMS)
@@ -436,5 +435,5 @@ function CDT(startDelayMS = 0){
 
 function resetPuzzle(){
   shufflePuzzle();
-  CDT(1000);
+  countDown(1000);
 }

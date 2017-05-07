@@ -11,6 +11,18 @@ body {
   width: 100%;
 }
 
+#clue {
+  font-family: "League-Gothic", Courier;
+  font-size: 20px;
+  color: white;
+  text-align: center;
+  margin: 10px 5px 0px 5px;
+}
+
+#notice_box {
+  margin: 10px;
+}
+
 #puzzle_container {
   height: 100%;
   width: 100%;
@@ -216,7 +228,7 @@ body {
 /*BUTTONS*/
 
 .button {
-  margin: 40px;
+  margin: 5px;
 	background-color:#3bb3e0;
 	font-family: 'Open Sans', sans-serif;
 	font-size:12px;
