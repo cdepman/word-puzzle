@@ -188,6 +188,13 @@ function onImage(e){
     initPuzzle();
 }
 
+start = document.getElementById("start_button")
+start.addEventListener('click', function(){
+  shufflePuzzle();
+  countDown();
+  start.parentNode.removeChild(start)
+})
+
 function setCanvas(){
     _clickWrapper = document.getElementById('canvas_click_wrapper');
     _frame = document.getElementById('frame');
@@ -204,10 +211,6 @@ function initPuzzle(){
     _currentDropPiece = null;
     _stage.drawImage(_img, 0, 0, _puzzleWidth, _puzzleHeight, 0, 0, _puzzleWidth, _puzzleHeight);
     buildPieces();
-    countDown(PUZZLE_INITIAL_VIEW_LENGTH_MS);
-    setTimeout(function(){
-      shufflePuzzle();
-    }, PUZZLE_INITIAL_VIEW_LENGTH_MS)
 }
 
 function createTitle(msg){
@@ -389,7 +392,7 @@ function gameOver(){
 
 // COUNTDOWN TIMER adapted from https://github.com/sanographix/css3-countdown
 
-const COUNTDOWN_LENGTH_SECONDS = 110;
+const COUNTDOWN_LENGTH_SECONDS = 100;
 
 function countdownTimer(elm,tl,executeAtEnd){
  this.initialize.apply(this,arguments);
