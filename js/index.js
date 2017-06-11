@@ -1,6 +1,25 @@
+//  \\      /////////////////////////
+//   \\    /////////////////////////
+//    \\  ///////// cdepman ///////
+//     \\/////////////////////////
+//     //\\\\\\\\\\\\\\\\\\\\\\\\\
+//    //  \\\\\ gameOver() to \\\\\
+//   //    \\\\\  bypass pic  \\\\\\
+//  //      \\\\\\\  puzzle  \\\\\\\\
+// //        \\\\\\\\\\\\\\\\\\\\\\\\\
+////          \\\\\\\\\\\\\\\\\\\\\\\\\
+
 document.body.onload = init;
 
-const ANSWERS = ["biplanes", "scrapped"];
+const ANSWERS = [
+  {
+    text: "biplanes",
+    complete: false
+  }, {
+    text: "scrapped",
+    complete: false
+  }
+];
 const HIDDEN_RIDDLE = "bad apple princess"
 const GUESS_ELEMENT_HASH = {};
 const puzzleWordElement = document.getElementById("puzzle_words");
@@ -126,11 +145,20 @@ function filter(array, filterFunction){
   return filtered;
 }
 
+function markCompleted(answer){
+  answer.complete = true;
+}
+
 function guessIsCorrect(guess){
   guess = guess.toLowerCase();
   for (var i = 0; i < ANSWERS.length; i++){
-    if (guess === ANSWERS[i]){
-      return true;
+    if (guess === ANSWERS[i].text){
+      if (ANSWERS[i].completed){
+        alertAlreadyAnswered(guess);
+      } else {
+        markCompleted(ANSWERS[i]);
+        return true;
+      }
     }
   }
   return false;
@@ -150,7 +178,12 @@ function submitGuess(){
 
 function alertWrongAnswer(wrongAnswer){
   let elem = document.getElementById("notice_box");
-  elem.innerHTML = `Sorry, that is not the right answer. Guess again!`;
+  elem.innerHTML = `Sorry, ${wrongAnswer} is not the right answer. Guess again!`;
+}
+
+function alertAlreadyAnswered(answer){
+  let elem = document.getElementById("notice_box");
+  elem.innerHTML = `Sorry, you already guessed ${answer}. Guess again!`;
 }
 
 // IMAGE PUZZLE adapted from: https://code.tutsplus.com/tutorials/create-an-html5-canvas-tile-swapping-puzzle--active-10747
