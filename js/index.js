@@ -145,7 +145,7 @@ function filter(array, filterFunction){
   return filtered;
 }
 
-function markCompleted(answer){
+function markComplete(answer){
   answer.complete = true;
 }
 
@@ -153,14 +153,17 @@ function guessIsCorrect(guess){
   guess = guess.toLowerCase();
   for (var i = 0; i < ANSWERS.length; i++){
     if (guess === ANSWERS[i].text){
-      if (ANSWERS[i].completed){
+      console.log(ANSWERS[i]);
+      if (ANSWERS[i].complete){
         alertAlreadyAnswered(guess);
+        return false;
       } else {
-        markCompleted(ANSWERS[i]);
+        markComplete(ANSWERS[i]);
         return true;
       }
     }
   }
+  alertWrongAnswer(guess);
   return false;
 }
 
@@ -171,8 +174,6 @@ function submitGuess(){
     document.getElementById("notice_box").innerHTML = "";
     revealCorrectGuess(guess);
     input.value = "";
-  } else {
-    alertWrongAnswer(guess);
   }
 }
 
