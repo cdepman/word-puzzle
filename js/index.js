@@ -78,12 +78,9 @@ function isSpaceCharacter(char){
 }
 
 function revealCorrectGuess(word){
-  console.log(word)
   each(word, function(letter){
     let optionsArray = GUESS_ELEMENT_HASH[letter];
-    console.log(optionsArray)
     let choice = chooseRandomOption(optionsArray);
-    console.log(choice)
     delete(choice.dataset.letter);
     choice.style.borderBottom = "none";
     choice.style.textShadow = "10px 10px 0 #ffd217, 20px 20px 0 #5ac7ff, 30px 30px 0 #ffd217, 40px 40px 0 #5ac7ff";
@@ -136,9 +133,7 @@ function map(array, callback){
 
 function filter(array, filterFunction){
   let filtered = [];
-  console.log(array);
   each(array, function(item){
-    console.log(item)
     if (filterFunction(item)){ filtered.push(item); }
   });
   return filtered;
@@ -177,9 +172,9 @@ function submitGuess(){
 }
 
 function inputKeyUp(event){
-  console.log(event)
+  const enterKey = 13;
   event.which = event.which || event.keventyCode;
-    if (event.which == 13) {
+    if (event.which == enterKey) {
        submitGuess();
     }
 }
