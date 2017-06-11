@@ -1,13 +1,20 @@
-//  \\      /////////////////////////
-//   \\    /////////////////////////
-//    \\  ///////// cdepman ///////
-//     \\/////////////////////////
-//     //\\\\\\\\\\\\\\\\\\\\\\\\\
-//    //  \\\\\ gameOver() to \\\\\
-//   //    \\\\\  bypass pic  \\\\\\
-//  //      \\\\\\\  puzzle  \\\\\\\\
-// //        \\\\\\\\\\\\\\\\\\\\\\\\\
-////          \\\\\\\\\\\\\\\\\\\\\\\\\
+//\\OOOOOOOOOOOOOO///////////////////////// 
+// \\OOOOOOOOOOOO/////////////////////////   
+//  \\OOOOOOOOOO/////////////////////////  /*\  
+//   \\OOOOOOOO/////////////////////////  /***\  
+//    \\OOOOOO/////////////////////////  /*****\  
+//     \\OOOO/////////////////////////  /*******\  
+//      \\OO/////////////////////////  /****|****\  
+//       \\/////////////////////////  /****(o)****\  
+//        XXXXXXXXXXXXXXXXXXXXXXXXX   ****(ooo)****  
+//       //\\\\\\\\\\\\\\\\\\\\\\\\\  \****(o)****/  
+//      //OO\\\\\\\\\\\\\\\\\\\\\\\\\  \****|****/  
+//     //OOOO\\\\\\\\\\\\\\\\\\\\\\\\\  \*******/  
+//    //OOOOOO\\\\\\\\\\\\\\\\\\\\\\\\\  \*****/  
+//   //OOOOOOOO\\\\\\\\\\\\\\\\\\\\\\\\\  \***/  
+//  //OOOOOOOOOO\\\\\\\\\\\\\\\\\\\\\\\\\  \*/  
+// //OOOOOOOOOOOO\\\\\\\\\\\\\\\\\\\\\\\\\   
+////OOOOOOOOOOOOOO\\\\\\\\\\\\\\\\\\\\\\\\\ 
 
 document.body.onload = init;
 
@@ -15,7 +22,8 @@ const ANSWERS = [
   {
     text: "biplanes",
     complete: false
-  }, {
+  }, 
+  {
     text: "scrapped",
     complete: false
   }
@@ -181,12 +189,12 @@ function inputKeyUp(event){
 
 function alertWrongAnswer(wrongAnswer){
   let elem = document.getElementById("notice_box");
-  elem.innerHTML = `Sorry, ${wrongAnswer} is not the right answer. Guess again!`;
+  elem.innerHTML = `Sorry, '${wrongAnswer}' is not the right answer. Guess again!`;
 }
 
 function alertAlreadyAnswered(answer){
   let elem = document.getElementById("notice_box");
-  elem.innerHTML = `Sorry, you already guessed ${answer}. Guess again!`;
+  elem.innerHTML = `Sorry, you already guessed '${answer}. Guess again!`;
 }
 
 // IMAGE PUZZLE adapted from: https://code.tutsplus.com/tutorials/create-an-html5-canvas-tile-swapping-puzzle--active-10747

@@ -44,6 +44,7 @@ body {
   display: flex;
   flex-wrap: wrap;
 }
+
 .letter-element {
   text-align: center;
   margin: 20px;
@@ -69,9 +70,7 @@ body {
 }
 
 .space-element {
-  width: 120px;
-  height: 230px;
-  margin: 20px;
+  width: 100%;
 }
 
 .guess-element {
