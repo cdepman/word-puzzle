@@ -15,7 +15,7 @@
       </div>
       <div id="word_puzzle_input_container">
         <div id="clue">Banking and colliding in the skies above Verdun, the ________ (8) still offered their French and German pilots more structural stability than their single-winged counterparts. They would be ________(8) for metal at the end of the war.</div>
-        <input type="text" placeholder="Guess" required="" id="guess_input" />
+        <input type="text" placeholder="Guess" required="" id="guess_input" onkeyup="inputKeyUp(event);" />
         <div class="button" id="submit_guess" onclick="submitGuess(this);">
           Submit Guess
         </div>
